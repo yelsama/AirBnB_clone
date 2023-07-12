@@ -19,8 +19,8 @@ class BaseModel:
         self.updated_at = datetime.now()
 
     def to_dict(self):
-        self.__dict__.update({'__class__': self.__class__.__name__})
-        # self.__dict__['__class__'] = self.__class__.__name__
+        # self.__dict__.update({'__class__': self.__class__.__name__})
+        self.__dict__['__class__'] = self.__class__.__name__
         return self.__dict__
 
     def __str__(self):
