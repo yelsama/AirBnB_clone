@@ -19,6 +19,7 @@ class BaseModel:
         self.updated_at = datetime.now()
 
     def to_dict(self):
+        """this makes modified copy of the dictionary"""
         a_dic = self.__dict__.copy()
         a_dic["created_at"] = self.created_at.isoformat()
         a_dic["updated_at"] = self.updated_at.isoformat()
