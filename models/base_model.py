@@ -19,9 +19,11 @@ class BaseModel:
         self.updated_at = datetime.now()
 
     def to_dict(self):
-        # self.__dict__.update({'__class__': self.__class__.__name__})
-        self.__dict__['__class__'] = self.__class__.__name__
-        return self.__dict__
+        a_dic = self.__dict__.copy()
+        a_dic["created_at"] = self.created_at.isoformat()
+        a_dic["updated_at"] = self.updated_at.isoformat()
+        a_dic["__class__"] = self.__class__.__name__
+        return a_dic
 
     def __str__(self):
         return "[{}] ({}) {}".format(self.__class__.__name__,
