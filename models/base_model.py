@@ -36,5 +36,6 @@ class BaseModel:
         return a_dic
 
     def __str__(self):
+        """set the print of instance"""
         return "[{}] ({}) {}".format(self.__class__.__name__,
         self.id, self.__dict__)
