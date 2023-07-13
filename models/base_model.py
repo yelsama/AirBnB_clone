@@ -35,7 +35,7 @@ class BaseModel:
     def __int__(self, *args, **kwargs):
         """initialise a basemodel"""
 
-        if len(kwargs) is not 0:
+        if len(kwargs) != 0:
             self.__dict__ = kwargs
             self.created_at = datetime.strptime(self.created_at,
                                                 "%Y-%m-%dT%H:%M:%S.%f")
