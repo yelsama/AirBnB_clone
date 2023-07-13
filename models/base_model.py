@@ -38,4 +38,4 @@ class BaseModel:
     def __str__(self):
         """set the print of instance"""
         return "[{}] ({}) {}".format(self.__class__.__name__,
-        self.id, self.__dict__)
+    self.id, self.__dict__)
