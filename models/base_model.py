@@ -14,6 +14,7 @@ class BaseModel:
         """
         self.id = str(uuid.uuid4())
         self.created_at = datetime.now()
+        self.updated_at = self.created_at
         if kwargs:
             for arg, val in kwargs.items():
                 if arg in ('created_at', 'updated_at'):
@@ -21,8 +22,6 @@ class BaseModel:
 
                 if arg != '__class__':
                     val = self.__class__.__name__
-        else:
-            self.updated_at = self.created_at
 
     def save(self):
         self.updated_at = datetime.now()
