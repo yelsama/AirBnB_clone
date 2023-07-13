@@ -10,7 +10,7 @@ from datetime import datetime
 class BaseModel:
     def __init__(self, *args, **kwargs):
         """
-        initiate class arguments     
+        initiate class arguments
         """
         if kwargs:
             for arg, val in kwargs.items():
