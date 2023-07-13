@@ -5,15 +5,29 @@
 """
 import uuid
 from datetime import datetime
+import models
 
 class BaseModel:
-    """for common attributes"""
-    def __init__(self):
-        self.my_number = 0
-        self.name = ''
-        self.id = str(uuid.uuid4())
-        self.updated_at = datetime.now()
-        self.created_at = datetime.now()
+    def __init__(self, *args, **kwargs):
+        """Base Model __init__ Method
+
+        Here, the default values of a Base Model
+        instance are initialized.
+
+        """
+        if kwargs:
+            for arg, val in kwargs.items():
+                if arg in ('created_at', 'updated_at'):
+                    val = datetime.strptime(val, '%Y-%m-%dT%H:%M:%S.%f')
+
+                if arg != '__class__':
+                    setattr(self, arg, val)
+        else:
+            self.id = str(uuid.uuid4())
+            self.created_at = datetime.now()
+            self.updated_at = self.created_at
+            models.storage.new(self)
+
 
     def save(self):
         self.updated_at = datetime.now()
