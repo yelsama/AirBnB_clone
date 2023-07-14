@@ -30,7 +30,7 @@ class FileStorage:
         """deseralize the json file"""
         try:
             with open(self.__file_path, mode='r', encoding='utf-8') as f:
-                newdata = json.loads(f)
+                newdata = json.load(f)
                 for m, k in newdata.items():
                     reloadedobj = eval('{}(**k)'.format(k['__class__']))
                     self.__objects[m] = reloadedobj
