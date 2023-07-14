@@ -6,12 +6,19 @@ from models.base_model import BaseModel
 from models.engine.file_storage import FileStorage
 from models import storage
 import json
+from models.user import User
+from models.place import Place
+from models.state import State
+from models.city import City
+from models.amenity import Amenity
+from models.review import Review
 
 class HBNBCommand(cmd.Cmd):
     """hbhb entry point"""
 
     prompt = '(hbnb) '
-    classlist = ["BaseModel"]
+    classlist = ["BaseModel", "User", "Place", "State", "Amenity", "Review",
+                 "City"]
 
     def do_EOF(self, line):
         """end of file"""
@@ -41,6 +48,10 @@ class HBNBCommand(cmd.Cmd):
             new.save()
             print(new.id)
 
+    def help_create(self):
+        ''' help create '''
+        print("Create command to create a new class\n")
+
     def do_show(self, line):
         """prints the string representation of an instance"""
         arg = line.split()
@@ -55,10 +66,10 @@ class HBNBCommand(cmd.Cmd):
             print('** instance id missing **')
             return False
 
-        objlist = storage.all()
-        for m in objlist.keys():
+        all_objs = storage.all()
+        for m in all_objs.keys():
             if m == "{}.{}".format(args[0], args[1]):
-                print(objlist[m])
+                print(all_objs[m])
                 return False
         print('** no instance found **')
 
@@ -79,32 +90,40 @@ class HBNBCommand(cmd.Cmd):
             print('** instance id missing **')
             return False
         else:
-            objlist = storage.all()
-            for m in objlist:
+            all_objs = storage.all()
+            for m in all_objs:
                 if m == "{}.{}".format(arg[0], arg[1]):
-                    objlist.pop(m)
+                    all_objs.pop(m)
                     storage.save()
                     return False
             print('** no instance found **')
 
+    def help_destroy(self):
+        ''' help destroy '''
+        print("Destroy command to destroy a created object\n")
+
     def do_all(self, line):
         ''' prints all string representations of instances'''
         arg = line.split()
-        objlist = storage.all()
+        all_objs = storage.all()
 
         if len(arg) == 0:
-            for m in objlist:
-                argstr = str(objlist[m])
+            for m in all_objs:
+                argstr = str(all_objs[m])
                 print(argstr)
         elif line not in self.classlist:
             print('** class doesn\'t exist **')
             return False
         else:
-            for m in objlist:
+            for m in all_objs:
                 if m.startswith(arg[0]):
-                    argstr = str(objlist[m])
+                    argstr = str(all_objs[m])
                     print(argstr)
         return False
+
+    def help_all(self):
+        ''' help all'''
+        print("All command to show all instances\n")
 
     def do_update(self,line):
         """updates an instance based on class name and id"""
@@ -117,7 +136,7 @@ class HBNBCommand(cmd.Cmd):
 
         try:
             cls = line.split()[0]
-            eval("{}{}".format(cls))
+            eval("{}()".format(cls))
         except IndexError:
             print('** class doesn\'t exist **')
             return False
@@ -128,9 +147,9 @@ class HBNBCommand(cmd.Cmd):
             print('** instance id missing **')
             return False
 
-        objlist = storage.all()
+        all_objs = storage.all()
         try:
-            clschange = objlist["{}.{}".format(cls, int_id)]
+            clschange = all_objs["{}.{}".format(cls, int_id)]
         except IndexError:
             print('** no instance found **')
             return False
@@ -157,6 +176,10 @@ class HBNBCommand(cmd.Cmd):
             except:
                 setattr(clschange, attri, str(attrivalue))
                 storage.save()
+
+    def help_update(self):
+        '''help update'''
+        print("update command to update an attribute\n")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
